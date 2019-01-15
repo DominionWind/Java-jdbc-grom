@@ -18,6 +18,7 @@ public class JDBCFirstStep {
                 System.out.println("Class " + JDBC_DRIVER + " not found");
                 return;
             }
+
             try (ResultSet resultSet = statement.executeQuery("SELECT * FROM CUSTOMER")) {
                 while (resultSet.next()) {
                     System.out.println("Object found");
