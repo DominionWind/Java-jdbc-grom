@@ -1,3 +1,5 @@
+package Lesson1andLesson2;
+
 public class Products {
     private long id;
     private String name;
@@ -29,7 +31,7 @@ public class Products {
 
     @Override
     public String toString() {
-        return "Products{" +
+        return "Lesson1andLesson2.Products{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", Description='" + Description + '\'' +

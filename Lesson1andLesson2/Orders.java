@@ -1,3 +1,5 @@
+package Lesson1andLesson2;
+
 import java.util.Date;
 
 public class Orders {
@@ -17,7 +19,7 @@ public class Orders {
 
     @Override
     public String toString() {
-        return "Orders{" +
+        return "Lesson1andLesson2.Orders{" +
                 "id=" + id +
                 ", productName='" + productName + '\'' +
                 ", price=" + price +
