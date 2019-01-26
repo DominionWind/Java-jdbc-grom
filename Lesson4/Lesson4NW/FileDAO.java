@@ -54,7 +54,7 @@ public class FileDAO {
 
     public List<File> getAllFiles(long id) {
         try (Connection connection = getConnection()) {
-            findByIdFile(id, connection);
+            getAllFilesFromStorage(id, connection);
 
         } catch (SQLException e) {
             System.err.println("Something went wrong");
