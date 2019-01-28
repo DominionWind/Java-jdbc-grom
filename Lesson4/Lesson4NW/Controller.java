@@ -12,7 +12,6 @@ public class Controller {
     private static final String PASS = "Utarasta287";
 
     FileDAO fileDAO = new FileDAO();
-    StorageDAO storageDAO = new StorageDAO();
 
     public void put(Storage storage, File file) throws Exception {
         sizeValidator(storage, file);
@@ -29,21 +28,46 @@ public class Controller {
         throw new Exception("file " + file.toString() + " not found in storage " + storage.toString());
     }
 
-    public void transferAll(Storage storageFrom, Storage storageTo) {
+    public void transferAll(Storage storageFrom, Storage storageTo) throws Exception {
+        ArrayList<File> files = fileDAO.getAllFiles(storageFrom.getId());
+        long sumStorageFrom = 0;
+        for (File file : files) {
+            fileAvailability(storageTo, file);
+            formatChecker(storageTo, file);
+            sumStorageFrom += file.getSize();
+        }
+        long sumStorageTo = 0;
+        ArrayList<File> filesInStorageTo = fileDAO.getAllFiles(storageTo.getId());
+        for (File f : filesInStorageTo) {
+            sumStorageTo += f.getSize();
+        }
 
+        if ((sumStorageFrom + sumStorageTo) < Long.parseLong(storageTo.getStorageMaxSize())) {
+            throw new Exception("Storage " + storageTo.toString() + " don`t have enough free space");
+        }
+
+        for (File file : files) {
+            file.setStorageId(storageTo.getId());
+        }
     }
 
+    public void transferFile(Storage storageFrom, Storage storageTo, long id) throws Exception {
+        sizeValidator(storageTo, fileDAO.findById(id));
+        fileAvailability(storageTo, fileDAO.findById(id));
+        formatChecker(storageTo, fileDAO.findById(id));
+
+        fileDAO.findById(id).setStorageId(storageTo.getId());
+    }
 
     private void sizeValidator(Storage storage, File file) throws Exception {
-        ArrayList<File> files = new ArrayList<>();
-        files.addAll(fileDAO.getAllFiles(storage.getId()));
+        ArrayList<File> files = fileDAO.getAllFiles(storage.getId());
         long sum = 0;
         for (File f : files) {
             sum += f.getSize();
         }
 
         if ((sum + file.getSize()) < Long.parseLong(storage.getStorageMaxSize())) {
-            throw new Exception("Storage " + storage.toString() + " don`t have enought free spase");
+            throw new Exception("Storage " + storage.toString() + " don`t have enough free space");
         }
     }
 

@@ -52,7 +52,7 @@ public class FileDAO {
         return null;
     }
 
-    public List<File> getAllFiles(long id) {
+    public ArrayList<File> getAllFiles(long id) {
         try (Connection connection = getConnection()) {
             getAllFilesFromStorage(id, connection);
 
